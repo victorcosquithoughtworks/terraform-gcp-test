@@ -21,7 +21,7 @@ func TestTerraformBasicExample(t *testing.T) {
 func infrastructureOptions(t *testing.T) *terraform.Options {
 	t.Parallel()
 	terraformOptions := &terraform.Options{
-		TerraformDir: "../basic-infra",
+		TerraformDir: "../main",
 		Vars:         map[string]interface{}{},
 		VarFiles:     []string{"varfile.tfvars"},
 		NoColor:      true,

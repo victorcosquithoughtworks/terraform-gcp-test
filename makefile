@@ -7,12 +7,12 @@ K := $(foreach exec,$(EXECUTABLES),\
 build: init validate lint test
 
 init :
-	cd basic-infra; terraform init .
+	cd main; terraform init .
 format :
-	cd basic-infra; terraform fmt -recursive .
+	cd main; terraform fmt -recursive .
 validate :
-	cd basic-infra; terraform validate . && cd basic-infra; terraform plan .
+	cd main; terraform validate . && terraform plan .
 lint :
-	config-lint -terraform basic-infra/main.tf
+	config-lint -terraform main/main.tf
 test :
 	cd test; go test -v -timeout 30m
