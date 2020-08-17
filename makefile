@@ -7,11 +7,11 @@ K := $(foreach exec,$(EXECUTABLES),\
 build: init validate lint test
 
 init :
-	terraform init basic-infra
+	cd basic-infra; terraform init .
 format :
-	terraform fmt -recursive basic-infra
+	cd basic-infra; terraform fmt -recursive .
 validate :
-	terraform validate basic-infra && terraform plan
+	cd basic-infra; terraform validate . && cd basic-infra; terraform plan .
 lint :
 	config-lint -terraform basic-infra/main.tf
 test :
