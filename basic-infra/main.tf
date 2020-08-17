@@ -36,7 +36,6 @@ resource "google_compute_instance" "vm_instance" {
   network_interface {
     network = google_compute_network.vpc_network.self_link
     access_config {
-      nat_ip = google_compute_address.vm_static_ip.address
     }
   }
 }
@@ -45,18 +44,34 @@ resource "google_compute_network" "vpc_network" {
   name = "terraform-network"
 }
 
-resource "google_compute_firewall" "default" {
-  name    = "test-firewall"
+resource "google_compute_firewall" "terraform-network-allow-http" {
+  name    = "terraform-network-allow-http"
   network = google_compute_network.vpc_network.name
-
-  allow {
-    protocol = "all"
-  }
-
   allow {
     protocol = "tcp"
-    ports    = ["80", "8080", "1000-2000"]
+    ports    = ["8080"]
   }
-
-  source_tags = ["web"]
+}
+resource "google_compute_firewall" "terraform-network-allow-https" {
+  name    = "terraform-network-allow-https"
+  network = google_compute_network.vpc_network.name
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+}
+resource "google_compute_firewall" "terraform-network-allow-icmp" {
+  name    = "terraform-network-allow-icmp"
+  network = google_compute_network.vpc_network.name
+  allow {
+    protocol = "icmp"
+  }
+}
+resource "google_compute_firewall" "terraform-network-allow-ssh" {
+  name    = "terraform-network-allow-ssh"
+  network = google_compute_network.vpc_network.name
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
 }
